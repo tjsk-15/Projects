@@ -1,0 +1,59 @@
+**
+
+This smart contract was built to help warehouses streamline their supply chain, mainly in the drop shipping sector. 
+
+For more information about this project please check out the link below.
+https://docs.google.com/document/d/19ysHRyu7g7Jp8HR9hp0mkkk0pLCiktaMTWSd1_mjGac/edit?usp=sharing
+
+**
+
+pragma solidity ^0.4.16;
+
+contract DropBlock {
+
+    struct order_details {
+        
+        uint256 order_id;
+        string order_date;
+        string order_name;
+        string order_address;
+        int256 order_amount;
+        uint256 order_warehouse_id;
+        string order_status;
+        
+    }
+    uint256 order_id = 101;
+    
+    mapping(address => order_details) orderdetails;
+    address[] public orders;
+    
+    function placeOrder(address _address, string _order_date, string _order_name, string _order_address, int256 _order_amount, uint256 _order_warehouse_id) public {
+        
+        var order = orderdetails[_address];
+        
+        order.order_id = order_id++;
+        order.order_date = _order_date;
+        order.order_name = _order_name;
+        order.order_address = _order_address;
+        order.order_amount = _order_amount;
+        order.order_warehouse_id = _order_warehouse_id;
+        order.order_status = 'Order Received.';
+        
+        orders.push(_address) -1;
+        
+        
+    }
+    
+    function trackLatestOrder(address _orderaddress) view public returns(uint, string, string, string, int, uint, string) {
+        
+        return (orderdetails[_orderaddress].order_id, orderdetails[_orderaddress].order_date, orderdetails[_orderaddress].order_name, orderdetails[_orderaddress].order_address, orderdetails[_orderaddress].order_amount, orderdetails[_orderaddress].order_warehouse_id, orderdetails[_orderaddress].order_status);
+        
+    }
+    
+    function updateOrderDetails(address _orderaddress, string _order_status) public returns(string) {
+        
+        orderdetails[_orderaddress].order_status = _order_status;
+        return 'The order has been updated.';
+    }
+    
+}
